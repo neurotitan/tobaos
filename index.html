@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
+            background-color: #f8f9f9;
         }
         .header {
             background-color: #6c63ff;
@@ -83,7 +83,7 @@
         <!-- Oliver's Table -->
         <div class="card">
             <h2>Oliver's Balance</h2>
-            <table>
+            <table id="oliver-table">
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -91,22 +91,11 @@
                         <th>Tobaos</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>2025-07-01</td>
-                        <td>Tree presentation</td>
-                        <td>20</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-02</td>
-                        <td>Syn tutor</td>
-                        <td>5</td>
-                    </tr>
-                </tbody>
+                <tbody></tbody>
                 <tfoot>
                     <tr class="total-row">
                         <td colspan="2">Total Tobaos</td>
-                        <td>25</td>
+                        <td id="oliver-total">0</td>
                     </tr>
                 </tfoot>
             </table>
@@ -115,7 +104,7 @@
         <!-- Giselle's Table -->
         <div class="card">
             <h2>Giselle's Balance</h2>
-            <table>
+            <table id="giselle-table">
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -123,17 +112,11 @@
                         <th>Tobaos</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>2025-07-02</td>
-                        <td>Syn tutor</td>
-                        <td>5</td>
-                    </tr>
-                </tbody>
+                <tbody></tbody>
                 <tfoot>
                     <tr class="total-row">
                         <td colspan="2">Total Tobaos</td>
-                        <td>5</td>
+                        <td id="giselle-total">0</td>
                     </tr>
                 </tfoot>
             </table>
@@ -141,5 +124,57 @@
 
     </div>
 
+    <script>
+        const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQm8WRoJQ-Rgfm0hYlBcFkKl_CKbJwYl5kxVPJFgwbowdBR1kBHWJbNZM9MYKPtj51LigEz95mD6F_B/pub?output=csv';
+
+        async function fetchData() {
+            const response = await fetch(sheetURL);
+            const data = await response.text();
+
+            // Parse CSV
+            const rows = data.split('\n').slice(1); // Skip the header row
+            const oliverData = [];
+            const giselleData = [];
+
+            rows.forEach(row => {
+                const [date, name, activity, tobaos] = row.split(',');
+
+                // Skip rows where 'Name' is empty
+                if (!name.trim()) return;
+
+                if (name.trim() === 'Oliver') {
+                    oliverData.push({ date, activity, tobaos: parseInt(tobaos) });
+                } else if (name.trim() === 'Giselle') {
+                    giselleData.push({ date, activity, tobaos: parseInt(tobaos) });
+                }
+            });
+
+            // Populate Oliver's table
+            const oliverTable = document.querySelector("#oliver-table tbody");
+            oliverTable.innerHTML = oliverData.map(row => `
+                <tr>
+                    <td>${row.date}</td>
+                    <td>${row.activity}</td>
+                    <td>${row.tobaos}</td>
+                </tr>
+            `).join('');
+            const oliverTotal = oliverData.reduce((sum, row) => sum + row.tobaos, 0);
+            document.querySelector("#oliver-total").textContent = oliverTotal;
+
+            // Populate Giselle's table
+            const giselleTable = document.querySelector("#giselle-table tbody");
+            giselleTable.innerHTML = giselleData.map(row => `
+                <tr>
+                    <td>${row.date}</td>
+                    <td>${row.activity}</td>
+                    <td>${row.tobaos}</td>
+                </tr>
+            `).join('');
+            const giselleTotal = giselleData.reduce((sum, row) => sum + row.tobaos, 0);
+            document.querySelector("#giselle-total").textContent = giselleTotal;
+        }
+
+        fetchData();
+    </script>
 </body>
 </html>
