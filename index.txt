@@ -1,147 +1,155 @@
-!DOCTYPE html
-html lang=en
-head
-    meta charset=UTF-8
-    meta name=viewport content=width=device-width, initial-scale=1.0
-    titleTobaos Balancetitle
-    style
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tobaos Balance</title>
+    <style>
         body {
-            font-family Arial, sans-serif;
-            margin 0;
-            padding 0;
-            background-color #f8f9fa;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
         }
         .header {
-            background-color #6c63ff;
-            color white;
-            text-align center;
-            padding 1rem 0;
+            background-color: #6c63ff;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
         }
         .header h1 {
-            margin 0;
-            font-size 2rem;
+            margin: 0;
+            font-size: 2rem;
         }
         .container {
-            padding 20px;
-            max-width 1200px;
-            margin 0 auto;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         .card {
-            background white;
-            border-radius 10px;
-            box-shadow 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-bottom 20px;
-            padding 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
         }
         .card h2 {
-            margin 0 0 20px 0;
-            font-size 1.5rem;
-            color #333;
+            margin: 0 0 20px 0;
+            font-size: 1.5rem;
+            color: #333;
         }
         table {
-            width 100%;
-            border-collapse collapse;
+            width: 100%;
+            border-collapse: collapse;
         }
         table, th, td {
-            border 1px solid #ddd;
+            border: 1px solid #ddd;
         }
         th, td {
-            text-align left;
-            padding 10px;
+            text-align: left;
+            padding: 10px;
         }
         th {
-            background-color #f1f1f1;
-            color #333;
+            background-color: #f1f1f1;
+            color: #333;
         }
         td {
-            background-color #fff;
+            background-color: #fff;
         }
         .total-row {
-            font-weight bold;
-            background-color #f9f9f9;
+            font-weight: bold;
+            background-color: #f9f9f9;
         }
-        @media (max-width 768px) {
+        @media (max-width: 768px) {
             body {
-                font-size 14px;
+                font-size: 14px;
             }
             table {
-                font-size 14px;
+                font-size: 14px;
             }
         }
-    style
-head
-body
+    </style>
+</head>
+<body>
 
-    !-- Header Section --
-    div class=header
-        h1Tobaos Balanceh1
-    div
+    <!-- Header Section -->
+    <div class="header">
+        <h1>Tobaos Balance</h1>
+    </div>
 
-    !-- Container --
-    div class=container
+    <!-- Container -->
+    <div class="container">
 
-        !-- Oliver's Table --
-        div class=card
-            h2Oliver's Balanceh2
-            table
-                thead
-                    tr
-                        thDateth
-                        thActivityth
-                        thTobaosth
-                    tr
-                thead
-                tbody
-                    tr
-                        td2025-07-01td
-                        tdTree Presentationtd
-                        td20td
-                    tr
-                    tr
-                        td2025-07-02td
-                        tdSynthesis tutortd
-                        td-5td
-                    tr
-                    tr
-                tbody
-                tfoot
-                    tr class=total-row
-                        td colspan=2Total Tobaostd
-                        td25td
-                    tr
-                tfoot
-            table
-        div
+        <!-- Oliver's Table -->
+        <div class="card">
+            <h2>Oliver's Balance</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Activity</th>
+                        <th>Tobaos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-07-01</td>
+                        <td>Tree presentation</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td>2025-07-02</td>
+                        <td>Syn tutor</td>
+                        <td>5</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="2">Total Tobaos</td>
+                        <td>25</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
 
-        !-- Giselle's Table --
-        div class=card
-            h2Giselle's Balanceh2
-            table
-                thead
-                    tr
-                        thDateth
-                        thActivityth
-                        thTobaosth
-                    tr
-                thead
-                tbody
-                    tr
-                        td2025-07-02td
-                        tdSynthesis tutortd
-                        td5td
-                    tr
-                    tr                    
-                tbody
-                tfoot
-                    tr class=total-row
-                        td colspan=2Total Tobaostd
-                        td5td
-                    tr
-                tfoot
-            table
-        div
+        <!-- Giselle's Table -->
+        <div class="card">
+            <h2>Giselle's Balance</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Activity</th>
+                        <th>Tobaos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-07-01</td>
+                        <td>Completed Task</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td>2025-06-30</td>
+                        <td>Extra Effort</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>2025-06-29</td>
+                        <td>Missed Deadline</td>
+                        <td>-10</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="2">Total Tobaos</td>
+                        <td>20</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
 
-    div
+    </div>
 
-body
-html
+</body>
+</html>
