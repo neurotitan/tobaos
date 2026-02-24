@@ -1,194 +1,799 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tobaos Balance</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9f9;
-        }
-        .header {
-            background-color: #6c63ff;
-            color: white;
-            text-align: center;
-            padding: 1rem 0;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 2rem;
-        }
-        .container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            padding: 20px;
-        }
-        .card h2 {
-            margin: 0 0 20px 0;
-            font-size: 1.5rem;
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            text-align: left;
-            padding: 10px;
-        }
-        th {
-            background-color: #f1f1f1;
-            color: #333;
-        }
-        td {
-            background-color: #fff;
-        }
-        .total-row {
-            font-weight: bold;
-            background-color: #f9f9f9;
-        }
-        @media (max-width: 768px) {
-            body {
-                font-size: 14px;
-            }
-            table {
-                font-size: 14px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tobaos Balance</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    min-height: 100vh;
+    color: #fff;
+    overflow-x: hidden;
+  }
+
+  /* Floating background particles */
+  .particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: floatUp linear infinite;
+    opacity: 0.3;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.3; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 15px 40px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 30px 0 20px;
+  }
+
+  .header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2.2rem, 6vw, 3.5rem);
+    background: linear-gradient(90deg, #f7d94e, #f0a500, #f7d94e, #f0a500);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+    filter: drop-shadow(0 2px 10px rgba(247, 217, 78, 0.3));
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .header .subtitle {
+    font-size: 1.1rem;
+    color: #a0b4d0;
+    margin-top: 5px;
+  }
+
+  /* Coin icon */
+  .coin {
+    display: inline-block;
+    width: 28px; height: 28px;
+    background: radial-gradient(circle at 35% 35%, #ffe066, #f0a500, #c77d00);
+    border-radius: 50%;
+    border: 2px solid #c77d00;
+    position: relative;
+    vertical-align: middle;
+    box-shadow: 0 2px 8px rgba(240, 165, 0, 0.4);
+  }
+  .coin::after {
+    content: 'T';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Fredoka One', cursive;
+    font-size: 14px;
+    color: #8b5e00;
+  }
+  .coin-sm {
+    width: 20px; height: 20px;
+  }
+  .coin-sm::after {
+    font-size: 10px;
+  }
+  .coin-lg {
+    width: 50px; height: 50px;
+  }
+  .coin-lg::after {
+    font-size: 26px;
+  }
+
+  /* How to earn section */
+  .earn-section {
+    background: rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 25px 20px;
+    margin: 20px 0 30px;
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  .earn-section h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #a0d8f0;
+  }
+
+  .activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+  }
+
+  .activity-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+  }
+
+  .activity-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+
+  .activity-card .icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .activity-card .name {
+    font-weight: 800;
+    font-size: 1.15rem;
+    margin-bottom: 6px;
+  }
+
+  .activity-card .details {
+    font-size: 0.85rem;
+    color: #8fa8c8;
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+
+  .activity-card .reward {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(247, 217, 78, 0.15);
+    border: 1px solid rgba(247, 217, 78, 0.3);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    color: #f7d94e;
+    font-size: 1rem;
+  }
+
+  .activity-card.presentation { border-top: 3px solid #e74c8b; }
+  .activity-card.synthesis { border-top: 3px solid #4ecdc4; }
+  .activity-card.kumon { border-top: 3px solid #a78bfa; }
+
+  /* Player sections */
+  .players {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 10px;
+  }
+
+  .player-card {
+    border-radius: 24px;
+    padding: 25px 20px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .player-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: 0.07;
+    z-index: 0;
+  }
+
+  .player-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .player-card.oliver {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(16, 185, 129, 0.1));
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  .player-card.giselle {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(167, 139, 250, 0.1));
+    border-color: rgba(236, 72, 153, 0.3);
+  }
+
+  .player-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+
+  .oliver .avatar {
+    background: linear-gradient(135deg, #3b82f6, #10b981);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  }
+
+  .giselle .avatar {
+    background: linear-gradient(135deg, #ec4899, #a78bfa);
+    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+  }
+
+  .player-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+  }
+
+  .player-title {
+    font-size: 0.85rem;
+    color: #8fa8c8;
+  }
+
+  .balance-box {
+    background: rgba(0,0,0,0.25);
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .balance-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #8fa8c8;
+    margin-bottom: 5px;
+  }
+
+  .balance-amount {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .oliver .balance-amount { color: #60d6a2; }
+  .giselle .balance-amount { color: #f0a0d0; }
+
+  /* Level bar */
+  .level-section {
+    margin-bottom: 15px;
+  }
+
+  .level-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #8fa8c8;
+    margin-bottom: 5px;
+  }
+
+  .level-bar {
+    height: 10px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+
+  .level-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 1s ease;
+  }
+
+  .oliver .level-fill {
+    background: linear-gradient(90deg, #3b82f6, #10b981);
+  }
+
+  .giselle .level-fill {
+    background: linear-gradient(90deg, #ec4899, #a78bfa);
+  }
+
+  /* Badges */
+  .badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Table */
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .history-table thead th {
+    text-align: left;
+    padding: 10px 8px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #8fa8c8;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .history-table tbody td {
+    padding: 10px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .history-table tbody tr:hover {
+    background: rgba(255,255,255,0.05);
+  }
+
+  .tobaos-earned {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #4ade80;
+    font-weight: 700;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 25px;
+    color: #5a7a9a;
+    font-style: italic;
+  }
+
+  .empty-state .empty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  /* Suggest banner */
+  .suggest-banner {
+    text-align: center;
+    margin-top: 35px;
+    padding: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    border: 1px dashed rgba(255,255,255,0.15);
+  }
+
+  .suggest-banner p {
+    color: #8fa8c8;
+    font-size: 0.95rem;
+  }
+
+  .suggest-banner span {
+    color: #f7d94e;
+  }
+
+  /* Loading spinner */
+  .loading {
+    text-align: center;
+    padding: 30px;
+    color: #8fa8c8;
+  }
+
+  .loading .spinner {
+    display: inline-block;
+    width: 30px; height: 30px;
+    border: 3px solid rgba(255,255,255,0.1);
+    border-top-color: #f7d94e;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 10px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .activities-grid {
+      grid-template-columns: 1fr;
+    }
+    .players {
+      grid-template-columns: 1fr;
+    }
+    .balance-amount {
+      font-size: 2.2rem;
+    }
+  }
+
+  /* Scroll reveal animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: revealUp 0.6s ease forwards;
+  }
+  .reveal-delay-1 { animation-delay: 0.1s; }
+  .reveal-delay-2 { animation-delay: 0.2s; }
+
+  @keyframes revealUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Sparkle effect on hover balance */
+  .balance-box:hover .balance-amount {
+    text-shadow: 0 0 20px currentColor;
+  }
+</style>
 </head>
 <body>
 
-    <!-- Header Section -->
-    <div class="header">
-        <h1>Tobaos Balance</h1>
-    </div>
+<!-- Floating particles background -->
+<div class="particles" id="particles"></div>
 
-    <!-- Instructions Section -->
-    <div class="container">
-        <div class="instructions">
-            <h2>How to Earn Tobaos</h2>
-            <ol>
-                <h3>These are some activities that can earn Tobaos:</h3>
-                <li>Presentation - at least 10 slides and 15 minutes long - up to 20 Tobaos.</li>
-                <li>Synthesis Tutor - 7 min session - 5 Tobaos.</li>
-                <li>Kumon - at least 30 minutes and half a page - 10 Tobaos.</li>
-            </ol>
-            <p>If you have any suggestions, please let me know!</p>
-        </div>
-    </div>
-    
-    <!-- Container -->
-    <div class="container">
+<div class="container">
 
-        <!-- Oliver's Table -->
-        <div class="card">
-            <h2>Oliver's Balance</h2>
-            <table id="oliver-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Activity</th>
-                        <th>Tobaos</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-                <tfoot>
-                    <tr class="total-row">
-                        <td colspan="2">Total Tobaos</td>
-                        <td id="oliver-total">0</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+  <!-- Header -->
+  <div class="header reveal">
+    <h1>⚡ Tobaos Balance ⚡</h1>
+    <p class="subtitle">Earn Tobaos. Level Up. Be Awesome.</p>
+  </div>
 
-        <!-- Giselle's Table -->
-        <div class="card">
-            <h2>Giselle's Balance</h2>
-            <table id="giselle-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Activity</th>
-                        <th>Tobaos</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-                <tfoot>
-                    <tr class="total-row">
-                        <td colspan="2">Total Tobaos</td>
-                        <td id="giselle-total">0</td>
-                    </tr>
-                </tfoot>
-            </table>
+  <!-- How to Earn -->
+  <div class="earn-section reveal reveal-delay-1">
+    <h2>🎯 How to Earn Tobaos</h2>
+    <div class="activities-grid">
+
+      <div class="activity-card presentation">
+        <span class="icon">🎤</span>
+        <div class="name">Presentation</div>
+        <div class="details">At least 10 slides &amp; 15 minutes long</div>
+        <div class="reward">
+          <span class="coin coin-sm"></span> Up to 20 Tobaos
         </div>
+      </div>
+
+      <div class="activity-card synthesis">
+        <span class="icon">🧠</span>
+        <div class="name">Synthesis Tutor</div>
+        <div class="details">Complete a 7-minute session</div>
+        <div class="reward">
+          <span class="coin coin-sm"></span> 5 Tobaos
+        </div>
+      </div>
+
+      <div class="activity-card kumon">
+        <span class="icon">✏️</span>
+        <div class="name">Kumon</div>
+        <div class="details">At least 30 minutes &amp; half a page</div>
+        <div class="reward">
+          <span class="coin coin-sm"></span> 10 Tobaos
+        </div>
+      </div>
 
     </div>
+  </div>
 
-    <script>
-        const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQm8WRoJQ-Rgfm0hYlBcFkKl_CKbJwYl5kxVPJFgwbowdBR1kBHWJbNZM9MYKPtj51LigEz95mD6F_B/pub?output=csv';
+  <!-- Player Cards -->
+  <div class="players">
 
-        async function fetchData() {
-            const response = await fetch(sheetURL);
-            const data = await response.text();
+    <!-- Oliver -->
+    <div class="player-card oliver reveal reveal-delay-2">
+      <div class="player-header">
+        <div class="avatar">🚀</div>
+        <div>
+          <div class="player-name">Oliver</div>
+          <div class="player-title" id="oliver-title">Tobaos Explorer</div>
+        </div>
+      </div>
 
-            // Parse CSV
-            const rows = data.split('\n').slice(1); // Skip the header row
-            const oliverData = [];
-            const giselleData = [];
+      <div class="badges" id="oliver-badges">
+        <div class="badge">🌟 Beginner</div>
+      </div>
 
-            rows.forEach(row => {
-                const [date, name, activity, tobaos] = row.split(',');
+      <div class="level-section">
+        <div class="level-info">
+          <span id="oliver-level-label">Level 1</span>
+          <span id="oliver-level-progress">0 / 50 to Level 2</span>
+        </div>
+        <div class="level-bar">
+          <div class="level-fill" id="oliver-level-fill" style="width: 0%;"></div>
+        </div>
+      </div>
 
-                // Skip rows where 'Name' is empty
-                if (!name.trim()) return;
+      <div class="balance-box">
+        <div class="balance-label">Total Balance</div>
+        <div class="balance-amount">
+          <span class="coin coin-lg coinAnim"></span>
+          <span id="oliver-total">0</span>
+        </div>
+      </div>
 
-                if (name.trim() === 'Oliver') {
-                    oliverData.push({ date, activity, tobaos: parseInt(tobaos) });
-                } else if (name.trim() === 'Giselle') {
-                    giselleData.push({ date, activity, tobaos: parseInt(tobaos) });
-                }
-            });
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Activity</th>
+            <th>Earned</th>
+          </tr>
+        </thead>
+        <tbody id="oliver-body">
+          <tr>
+            <td colspan="3">
+              <div class="loading">
+                <div class="spinner"></div>
+                <div>Loading data...</div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-            // Populate Oliver's table
-            const oliverTable = document.querySelector("#oliver-table tbody");
-            oliverTable.innerHTML = oliverData.map(row => `
-                <tr>
-                    <td>${row.date}</td>
-                    <td>${row.activity}</td>
-                    <td>${row.tobaos}</td>
-                </tr>
-            `).join('');
-            const oliverTotal = oliverData.reduce((sum, row) => sum + row.tobaos, 0);
-            document.querySelector("#oliver-total").textContent = oliverTotal;
+    <!-- Giselle -->
+    <div class="player-card giselle reveal reveal-delay-2">
+      <div class="player-header">
+        <div class="avatar">💜</div>
+        <div>
+          <div class="player-name">Giselle</div>
+          <div class="player-title" id="giselle-title">Tobaos Champion</div>
+        </div>
+      </div>
 
-            // Populate Giselle's table
-            const giselleTable = document.querySelector("#giselle-table tbody");
-            giselleTable.innerHTML = giselleData.map(row => `
-                <tr>
-                    <td>${row.date}</td>
-                    <td>${row.activity}</td>
-                    <td>${row.tobaos}</td>
-                </tr>
-            `).join('');
-            const giselleTotal = giselleData.reduce((sum, row) => sum + row.tobaos, 0);
-            document.querySelector("#giselle-total").textContent = giselleTotal;
+      <div class="badges" id="giselle-badges">
+        <div class="badge">🌟 Beginner</div>
+      </div>
+
+      <div class="level-section">
+        <div class="level-info">
+          <span id="giselle-level-label">Level 1</span>
+          <span id="giselle-level-progress">0 / 50 to Level 2</span>
+        </div>
+        <div class="level-bar">
+          <div class="level-fill" id="giselle-level-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <div class="balance-box">
+        <div class="balance-label">Total Balance</div>
+        <div class="balance-amount">
+          <span class="coin coin-lg coinAnim"></span>
+          <span id="giselle-total">0</span>
+        </div>
+      </div>
+
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Activity</th>
+            <th>Earned</th>
+          </tr>
+        </thead>
+        <tbody id="giselle-body">
+          <tr>
+            <td colspan="3">
+              <div class="loading">
+                <div class="spinner"></div>
+                <div>Loading data...</div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Suggestion Banner -->
+  <div class="suggest-banner reveal reveal-delay-2">
+    <p>💡 Have an idea for a new way to earn Tobaos? <span>Let me know!</span></p>
+  </div>
+
+</div>
+
+<script>
+  // ── Floating particles ──
+  const particlesEl = document.getElementById('particles');
+  const colors = ['#f7d94e', '#f0a500', '#3b82f6', '#ec4899', '#a78bfa', '#4ecdc4', '#10b981'];
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 8 + 3;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+    p.style.animationDelay = (Math.random() * 20) + 's';
+    particlesEl.appendChild(p);
+  }
+
+  // ── Coin spin animation ──
+  const coins = document.querySelectorAll('.coinAnim');
+  coins.forEach((coin, i) => {
+    setInterval(() => {
+      coin.style.transform = 'rotateY(180deg)';
+      setTimeout(() => { coin.style.transform = 'rotateY(0deg)'; }, 600);
+    }, 3000 + i * 500);
+    coin.style.transition = 'transform 0.6s ease';
+  });
+
+  // ── Level system ──
+  const levels = [
+    { level: 1, threshold: 0,   title: 'Beginner',     emoji: '🌟' },
+    { level: 2, threshold: 50,  title: 'Apprentice',    emoji: '⚡' },
+    { level: 3, threshold: 120, title: 'Achiever',      emoji: '🔥' },
+    { level: 4, threshold: 200, title: 'Expert',        emoji: '💎' },
+    { level: 5, threshold: 350, title: 'Master',        emoji: '🏆' },
+    { level: 6, threshold: 500, title: 'Legend',         emoji: '👑' },
+  ];
+
+  function getLevel(total) {
+    let current = levels[0];
+    for (let i = levels.length - 1; i >= 0; i--) {
+      if (total >= levels[i].threshold) { current = levels[i]; break; }
+    }
+    return current;
+  }
+
+  function getNextLevel(total) {
+    for (let i = 0; i < levels.length; i++) {
+      if (total < levels[i].threshold) return levels[i];
+    }
+    return null;
+  }
+
+  function updatePlayerUI(name, total) {
+    const lower = name.toLowerCase();
+    const lvl = getLevel(total);
+    const next = getNextLevel(total);
+
+    // Level label
+    document.getElementById(lower + '-level-label').textContent = 'Level ' + lvl.level;
+
+    // Progress to next level
+    if (next) {
+      const progressInLevel = total - lvl.threshold;
+      const levelRange = next.threshold - lvl.threshold;
+      const pct = Math.min(100, Math.round((progressInLevel / levelRange) * 100));
+      document.getElementById(lower + '-level-progress').textContent =
+        total + ' / ' + next.threshold + ' to Level ' + next.level;
+      document.getElementById(lower + '-level-fill').style.width = pct + '%';
+    } else {
+      document.getElementById(lower + '-level-progress').textContent = 'MAX LEVEL!';
+      document.getElementById(lower + '-level-fill').style.width = '100%';
+    }
+
+    // Badges
+    const badgesEl = document.getElementById(lower + '-badges');
+    let badgesHTML = '';
+    levels.forEach(l => {
+      if (total >= l.threshold) {
+        badgesHTML += '<div class="badge">' + l.emoji + ' ' + l.title + '</div>';
+      }
+    });
+    badgesEl.innerHTML = badgesHTML;
+
+    // Title
+    const titleMap = { oliver: 'Tobaos Explorer', giselle: 'Tobaos Champion' };
+    document.getElementById(lower + '-title').textContent = lvl.emoji + ' ' + titleMap[lower] + ' — ' + lvl.title;
+  }
+
+  // ── Activity emoji mapping ──
+  function activityEmoji(activity) {
+    const a = activity.toLowerCase();
+    if (a.includes('presentation')) return '🎤';
+    if (a.includes('synthesis'))    return '🧠';
+    if (a.includes('kumon'))        return '✏️';
+    return '⭐';
+  }
+
+  // ── Fetch Google Sheets data ──
+  const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQm8WRoJQ-Rgfm0hYlBcFkKl_CKbJwYl5kxVPJFgwbowdBR1kBHWJbNZM9MYKPtj51LigEz95mD6F_B/pub?output=csv';
+
+  async function fetchData() {
+    try {
+      const response = await fetch(sheetURL);
+      const data = await response.text();
+
+      const rows = data.split('\n').slice(1);
+      const oliverData = [];
+      const giselleData = [];
+
+      rows.forEach(row => {
+        const [date, name, activity, tobaos] = row.split(',');
+        if (!name || !name.trim()) return;
+
+        if (name.trim() === 'Oliver') {
+          oliverData.push({ date: date.trim(), activity: activity.trim(), tobaos: parseInt(tobaos) || 0 });
+        } else if (name.trim() === 'Giselle') {
+          giselleData.push({ date: date.trim(), activity: activity.trim(), tobaos: parseInt(tobaos) || 0 });
         }
+      });
 
-        fetchData();
-    </script>
+      // ── Oliver ──
+      const oliverBody = document.getElementById('oliver-body');
+      if (oliverData.length > 0) {
+        oliverBody.innerHTML = oliverData.map(row => 
+          '<tr>' +
+            '<td>' + row.date + '</td>' +
+            '<td>' + activityEmoji(row.activity) + ' ' + row.activity + '</td>' +
+            '<td><span class="tobaos-earned"><span class="coin coin-sm"></span> +' + row.tobaos + '</span></td>' +
+          '</tr>'
+        ).join('');
+      } else {
+        oliverBody.innerHTML =
+          '<tr><td colspan="3"><div class="empty-state"><span class="empty-icon">🎮</span>No activities yet — time to start earning!</div></td></tr>';
+      }
+      const oliverTotal = oliverData.reduce((sum, r) => sum + r.tobaos, 0);
+      document.getElementById('oliver-total').textContent = oliverTotal;
+      updatePlayerUI('Oliver', oliverTotal);
+
+      // ── Giselle ──
+      const giselleBody = document.getElementById('giselle-body');
+      if (giselleData.length > 0) {
+        giselleBody.innerHTML = giselleData.map(row => 
+          '<tr>' +
+            '<td>' + row.date + '</td>' +
+            '<td>' + activityEmoji(row.activity) + ' ' + row.activity + '</td>' +
+            '<td><span class="tobaos-earned"><span class="coin coin-sm"></span> +' + row.tobaos + '</span></td>' +
+          '</tr>'
+        ).join('');
+      } else {
+        giselleBody.innerHTML =
+          '<tr><td colspan="3"><div class="empty-state"><span class="empty-icon">🌸</span>No activities yet — time to start earning!</div></td></tr>';
+      }
+      const giselleTotal = giselleData.reduce((sum, r) => sum + r.tobaos, 0);
+      document.getElementById('giselle-total').textContent = giselleTotal;
+      updatePlayerUI('Giselle', giselleTotal);
+
+    } catch (err) {
+      console.error('Failed to fetch Tobaos data:', err);
+      document.getElementById('oliver-body').innerHTML =
+        '<tr><td colspan="3"><div class="empty-state"><span class="empty-icon">⚠️</span>Could not load data. Try refreshing!</div></td></tr>';
+      document.getElementById('giselle-body').innerHTML =
+        '<tr><td colspan="3"><div class="empty-state"><span class="empty-icon">⚠️</span>Could not load data. Try refreshing!</div></td></tr>';
+    }
+  }
+
+  fetchData();
+</script>
+
 </body>
 </html>
